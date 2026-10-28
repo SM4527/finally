@@ -1,0 +1,19 @@
+{
+  "$schema": "https://anthropic.com",
+  "name": "siva-tools",
+  "owner": {
+    "name": "Siva",
+    "email": "sivanandam.mani@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "independent-reviewer",
+      "description": "Carry out independent review of all changes since last commit",
+      "version": "1.0.0",
+      "author": {
+        "name": "Siva"
+      },
+      "source": "./independent-reviewer"
+    }
+  ]
+}
