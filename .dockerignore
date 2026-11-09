@@ -1,0 +1,17 @@
+.git
+.github
+.idea
+.vscode
+.claude
+.env
+.env.*
+!.env.example
+db/*.db
+**/node_modules
+**/.next
+**/out
+**/.venv
+**/__pycache__
+**/.pytest_cache
+test
+planning

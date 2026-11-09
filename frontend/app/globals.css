@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0d1117;
+  --color-panel: #131a23;
+  --color-raised: #1a2330;
+  --color-line: #253040;
+  --color-text: #d4dbe4;
+  --color-dim: #7b8794;
+  --color-up: #2bb673;
+  --color-down: #e5534b;
+  --color-accent: #ecad0a;
+  --color-blue: #209dd7;
+  --color-purple: #753991;
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.price-cell {
+  transition: background-color 500ms ease-out;
+}
+.flash-up {
+  background-color: color-mix(in srgb, var(--color-up) 35%, transparent);
+  transition: none;
+}
+.flash-down {
+  background-color: color-mix(in srgb, var(--color-down) 35%, transparent);
+  transition: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .price-cell { transition: none; }
+}

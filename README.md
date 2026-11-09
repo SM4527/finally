@@ -4,7 +4,7 @@ An AI-powered trading workstation: live market data, a simulated $10,000 portfol
 
 FinAlly is built by coding agents that coordinate through the specs in [`planning/`](planning/PLAN.md).
 
-> **Status:** in development. The backend market data layer (simulator, Massive client, price cache, SSE stream) is built and tested. The rest of the app is not yet written, so the Quick start below does not work yet.
+> **Status:** in development. The backend market data layer (simulator, Massive client, price cache, SSE stream) is built and tested. The rest of the app is not yet written, so the Run steps below do not work yet.
 
 ## Features
 
@@ -24,17 +24,19 @@ FinAlly is built by coding agents that coordinate through the specs in [`plannin
 | AI | LiteLLM → Groq (`gpt-oss-120b`), OpenRouter free-model fallback |
 | Deployment | Single Docker container on port 8000 |
 
-## Quick start
+## Run
 
-1. Copy `.env.example` to `.env` and set `GROQ_API_KEY` and/or `OPENROUTER_API_KEY`.
-2. Start the app:
+Requires Docker.
+
+1. Copy `.env.example` to `.env` and set `GROQ_API_KEY` and/or `OPENROUTER_API_KEY` (or `LLM_MOCK=true`).
+2. Start the app (builds the image on first run; add `--build` / `-Build` to rebuild):
    ```bash
    ./scripts/start_mac.sh        # macOS / Linux
-   ./scripts/start_windows.ps1   # Windows
+   ./scripts/start_windows.ps1   # Windows PowerShell
    ```
 3. Open http://localhost:8000.
 
-Stop it with `scripts/stop_mac.sh` or `scripts/stop_windows.ps1`. Your data is kept in the `finally-data` Docker volume.
+Stop with `scripts/stop_mac.sh` or `scripts/stop_windows.ps1`. Data is kept in the `finally-data` Docker volume; `docker volume rm finally-data` resets it.
 
 ## Configuration
 
