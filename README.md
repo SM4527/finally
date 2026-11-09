@@ -4,7 +4,7 @@ An AI-powered trading workstation: live market data, a simulated $10,000 portfol
 
 FinAlly is built by coding agents that coordinate through the specs in [`planning/`](planning/PLAN.md).
 
-> **Status:** planning stage. The spec is complete; the code is not yet written.
+> **Status:** in development. The backend market data layer (simulator, Massive client, price cache, SSE stream) is built and tested. The rest of the app is not yet written, so the Quick start below does not work yet.
 
 ## Features
 
@@ -43,7 +43,20 @@ Stop it with `scripts/stop_mac.sh` or `scripts/stop_windows.ps1`. Your data is k
 | `GROQ_API_KEY` | Primary LLM provider |
 | `OPENROUTER_API_KEY` | Fallback LLM provider |
 | `MASSIVE_API_KEY` | Optional real market data; leave empty to use the simulator |
+| `MASSIVE_POLL_INTERVAL` | Seconds between Massive polls (default 15, free-tier safe) |
 | `LLM_MOCK` | `true` returns canned LLM replies (for tests, no key needed) |
+
+## Backend development
+
+Requires [uv](https://docs.astral.sh/uv/). From `backend/`:
+
+```bash
+uv sync --extra dev          # install dependencies, including test tools
+uv run pytest -v             # run the unit tests
+uv run market_data_demo.py   # live price table in the terminal (Ctrl+C to quit)
+```
+
+The demo uses the simulator, or Massive when `MASSIVE_API_KEY` is set in `.env`. Add `--seconds 20` to stop it automatically.
 
 ## Project layout
 
