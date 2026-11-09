@@ -60,7 +60,10 @@ def test_format_event_sorted_and_compact():
     cache.update("MSFT", 2.0, 1.0)
     cache.update("AAPL", 1.0, 1.0)
     out = format_event(cache)
-    assert out.index("AAPL") < out.index("MSFT") and ", " not in out and ": " not in out
+    assert out.startswith("data: ") and out.endswith("\n\n")
+    payload = out[len("data: "):].strip()
+    assert payload.index("AAPL") < payload.index("MSFT")
+    assert ", " not in payload and ": " not in payload
 
 
 def test_route_headers_and_first_frame(monkeypatch):
