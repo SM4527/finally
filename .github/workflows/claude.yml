@@ -33,7 +33,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.13"
 
       - name: Set up uv
         uses: astral-sh/setup-uv@v6
@@ -48,6 +48,6 @@ jobs:
           additional_permissions: |
             actions: read
 
-          # Let Claude install dependencies and run the Python tests
+          # Only uv (per CLAUDE.md) and cd are allowed
           claude_args: |
-            --allowedTools "Bash(uv:*),Bash(python3:*),Bash(pytest:*),Bash(pip:*),Bash(cd:*)"
+            --allowedTools "Bash(uv:*),Bash(cd:*)"
