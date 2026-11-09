@@ -4,7 +4,7 @@ An AI-powered trading workstation: live market data, a simulated $10,000 portfol
 
 FinAlly is built by coding agents that coordinate through the specs in [`planning/`](planning/PLAN.md).
 
-> **Status:** in development. The backend market data layer (simulator, Massive client, price cache, SSE stream) is built and tested. The rest of the app is not yet written, so the Run steps below do not work yet.
+> **Status:** feature-complete. Backend (135 tests), frontend (18 tests) and the Playwright E2E suite (8 scenarios, run against a fresh Docker container) all pass. Built by an agent team; see [`planning/TEAM.md`](planning/TEAM.md).
 
 ## Features
 
@@ -18,11 +18,12 @@ FinAlly is built by coding agents that coordinate through the specs in [`plannin
 
 | Layer | Tech |
 |---|---|
-| Frontend | Next.js + TypeScript (static export), Tailwind, Lightweight Charts |
-| Backend | FastAPI, managed with `uv` |
+| Frontend | Next.js 16 + React 19 + TypeScript (static export), Tailwind 4, Lightweight Charts 5 |
+| Backend | FastAPI on Python 3.13, managed with `uv` |
 | Database | SQLite |
 | AI | LiteLLM → Groq (`gpt-oss-120b`), OpenRouter free-model fallback |
 | Deployment | Single Docker container on port 8000 |
+| Tests | pytest, Vitest + React Testing Library, Playwright |
 
 ## Run
 
@@ -48,23 +49,49 @@ Stop with `scripts/stop_mac.sh` or `scripts/stop_windows.ps1`. Data is kept in t
 | `MASSIVE_POLL_INTERVAL` | Seconds between Massive polls (default 15, free-tier safe) |
 | `LLM_MOCK` | `true` returns canned LLM replies (for tests, no key needed) |
 
-## Backend development
+## Development
+
+### Backend
 
 Requires [uv](https://docs.astral.sh/uv/). From `backend/`:
 
 ```bash
-uv sync --extra dev          # install dependencies, including test tools
-uv run pytest -v             # run the unit tests
-uv run market_data_demo.py   # live price table in the terminal (Ctrl+C to quit)
+uv sync                                    # install dependencies, including test tools
+uv run pytest                              # run the unit tests
+uv run uvicorn app.main:app --port 8000    # run the API (serves ../frontend/out if built)
+uv run market_data_demo.py                 # live price table in the terminal (Ctrl+C to quit)
 ```
 
-The demo uses the simulator, or Massive when `MASSIVE_API_KEY` is set in `.env`. Add `--seconds 20` to stop it automatically.
+Set `FINALLY_DB_PATH` to use a different SQLite file (default `db/finally.db`). The demo uses the simulator, or Massive when `MASSIVE_API_KEY` is set in `.env`; add `--seconds 20` to stop it automatically.
+
+### Frontend
+
+Requires Node 24. From `frontend/`:
+
+```bash
+npm ci
+npm run dev      # dev server; proxies /api to http://localhost:8000
+npm test         # Vitest unit tests
+npm run build    # static export to frontend/out
+```
+
+### E2E tests
+
+Run a fresh container with `LLM_MOCK=true`, then the Playwright suite:
+
+```bash
+docker build -t finally .   # from the repo root
+docker run -d --name finally-e2e -v finally-e2e-data:/app/db -p 8000:8000 -e LLM_MOCK=true finally
+cd test && npm ci && npx playwright install chromium && npx playwright test
+```
+
+Set `BASE_URL` to test another address. Remove the container and volume afterwards.
 
 ## Project layout
 
 ```
 frontend/   Next.js app
-backend/    FastAPI app (uv project)
+backend/    FastAPI app (uv project): market data, db, portfolio, chat
 planning/   Specs shared by the agents
 scripts/    Start/stop scripts
 test/       Playwright E2E tests
