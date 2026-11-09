@@ -1,0 +1,61 @@
+# FinAlly — the Finance Ally
+
+An AI-powered trading workstation: live market data, a simulated $10,000 portfolio, and an AI chat assistant that can analyze your positions and trade on your behalf. Think Bloomberg terminal with an AI copilot.
+
+FinAlly is built by coding agents that coordinate through the specs in [`planning/`](planning/PLAN.md).
+
+> **Status:** planning stage. The spec is complete; the code is not yet written.
+
+## Features
+
+- Live prices streamed over SSE, with green/red flashes and sparklines
+- Market orders with instant fills, no fees
+- Portfolio heatmap, P&L chart and positions table
+- AI chat that can explain your portfolio, place trades and edit your watchlist
+- Built-in market simulator by default; real data with a Massive (Polygon.io) key
+
+## Stack
+
+| Layer | Tech |
+|---|---|
+| Frontend | Next.js + TypeScript (static export), Tailwind, Lightweight Charts |
+| Backend | FastAPI, managed with `uv` |
+| Database | SQLite |
+| AI | LiteLLM → Groq (`gpt-oss-120b`), OpenRouter free-model fallback |
+| Deployment | Single Docker container on port 8000 |
+
+## Quick start
+
+1. Copy `.env.example` to `.env` and set `GROQ_API_KEY` and/or `OPENROUTER_API_KEY`.
+2. Start the app:
+   ```bash
+   ./scripts/start_mac.sh        # macOS / Linux
+   ./scripts/start_windows.ps1   # Windows
+   ```
+3. Open http://localhost:8000.
+
+Stop it with `scripts/stop_mac.sh` or `scripts/stop_windows.ps1`. Your data is kept in the `finally-data` Docker volume.
+
+## Configuration
+
+| Variable | Purpose |
+|---|---|
+| `GROQ_API_KEY` | Primary LLM provider |
+| `OPENROUTER_API_KEY` | Fallback LLM provider |
+| `MASSIVE_API_KEY` | Optional real market data; leave empty to use the simulator |
+| `LLM_MOCK` | `true` returns canned LLM replies (for tests, no key needed) |
+
+## Project layout
+
+```
+frontend/   Next.js app
+backend/    FastAPI app (uv project)
+planning/   Specs shared by the agents
+scripts/    Start/stop scripts
+test/       Playwright E2E tests
+db/         SQLite file for local runs
+```
+
+## License
+
+MIT, see [LICENSE](LICENSE).
