@@ -4,6 +4,8 @@ An AI-powered trading workstation: live market data, a simulated $10,000 portfol
 
 FinAlly is built by coding agents that coordinate through the specs in [`planning/`](planning/PLAN.md). Based on Ed Donner's FinAlly course project.
 
+![FinAlly: watchlist, live price chart, positions heatmap, portfolio value, positions table and the AI assistant](docs/screenshot.png)
+
 > **Status:** feature-complete. Backend (135 tests), frontend (18 tests) and the Playwright E2E suite (8 scenarios, run against a fresh Docker container) all pass. Built by an agent team; see [`planning/TEAM.md`](planning/TEAM.md).
 
 ## Features
