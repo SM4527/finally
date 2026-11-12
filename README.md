@@ -2,7 +2,7 @@
 
 An AI-powered trading workstation: live market data, a simulated $10,000 portfolio, and an AI chat assistant that can analyze your positions and trade on your behalf. Think Bloomberg terminal with an AI copilot.
 
-FinAlly is built by coding agents that coordinate through the specs in [`planning/`](planning/PLAN.md). Based on Ed Donner's FinAlly course project.
+FinAlly is built by coding agents that coordinate through the specs in [`planning/`](planning/PLAN.md). Based on Ed Donner's Udemy course capstone project.
 
 ![FinAlly: watchlist, live price chart, positions heatmap, portfolio value, positions table and the AI assistant](docs/screenshot.png)
 
